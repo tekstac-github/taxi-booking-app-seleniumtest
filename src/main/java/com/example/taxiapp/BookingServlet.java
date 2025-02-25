@@ -11,6 +11,23 @@ import java.io.IOException;
 public class BookingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleBooking(req, resp);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        resp.getWriter().write("<html><body>");
+        resp.getWriter().write("<h2>Taxi Booking Form</h2>");
+        resp.getWriter().write("<form method='post' action='/taxiapp/book'>");
+        resp.getWriter().write("Pickup: <input type='text' name='pickup'><br>");
+        resp.getWriter().write("Destination: <input type='text' name='destination'><br>");
+        resp.getWriter().write("<input type='submit' value='Book Taxi'>");
+        resp.getWriter().write("</form>");
+        resp.getWriter().write("</body></html>");
+    }
+
+    private void handleBooking(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String pickup = req.getParameter("pickup");
         String destination = req.getParameter("destination");
 
