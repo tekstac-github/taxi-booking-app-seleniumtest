@@ -24,10 +24,10 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 sh '''
-                sudo systemctl stop tomcat9
+                sudo -S systemctl stop tomcat9
                 sudo rm -rf $TOMCAT_PATH/webapps/taxiapp*
                 sudo cp target/$WAR_FILE $TOMCAT_PATH/webapps/
-                sudo systemctl start tomcat9
+                sudo -S systemctl stop tomcat9
                 '''
             }
         }
