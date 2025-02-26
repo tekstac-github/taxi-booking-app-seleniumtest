@@ -4,6 +4,8 @@ pipeline {
     environment {
         TOMCAT_PATH = '/var/lib/tomcat9/'
         WAR_FILE = 'taxiapp*.war'
+        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
+        PATH = "${JAVA_HOME}/bin:${PATH}"
     }
 
     stages {
