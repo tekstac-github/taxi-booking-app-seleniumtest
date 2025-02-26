@@ -25,8 +25,8 @@ pipeline {
             steps {
                 sh '''
                 sudo -S systemctl stop tomcat9
-                sudo rm -rf $TOMCAT_PATH/webapps/taxiapp*
-                sudo cp target/$WAR_FILE $TOMCAT_PATH/webapps/
+                sudo -S rm -rf $TOMCAT_PATH/webapps/taxiapp*
+                sudo -S cp target/$WAR_FILE $TOMCAT_PATH/webapps/
                 sudo -S systemctl stop tomcat9
                 '''
             }
