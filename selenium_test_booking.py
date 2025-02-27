@@ -1,15 +1,21 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 import time
 
-# Setup WebDriver
+# Setup WebDriver with headless options
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+
 # Make sure the right driver is installed (like chromedriver)
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=chrome_options)
 
 try:
     # Open the taxi booking app
-    driver.get("http://localhost:9090/taxiapp1/book")
+    driver.get("http://localhost:9090/taxiapp/book")
 
     # Find and fill the pickup location
     pickup_input = driver.find_element(By.NAME, "pickup")
