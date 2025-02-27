@@ -9,7 +9,7 @@ driver = webdriver.Chrome()
 
 try:
     # Open the taxi booking app
-    driver.get("http://localhost:9090/taxiapp/book")
+    driver.get("http://localhost:9090/taxiapp1/book")
 
     # Find and fill the pickup location
     pickup_input = driver.find_element(By.NAME, "pickup")
