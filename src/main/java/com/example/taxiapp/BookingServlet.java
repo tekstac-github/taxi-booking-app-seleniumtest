@@ -1,66 +1,44 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-import os
+package com.example.taxiapp;
 
-# Setup WebDriver with headless options
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--remote-debugging-port=9222")
-chrome_options.add_argument(f"--user-data-dir=/tmp/selenium_{os.getenv('BUILD_NUMBER', 'default')}")
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-# Make sure the right driver is installed (like chromedriver)
-print("Starting WebDriver...")
-driver = webdriver.Chrome(options=chrome_options)
+@WebServlet("/book")
+public class BookingServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        handleBooking(req, resp);
+    }
 
-try:
-    # Open the taxi booking app
-    print("Navigating to taxi booking app...")
-    driver.get("http://localhost:9090/taxiapp/book")
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        resp.getWriter().write("<html><body>");
+        resp.getWriter().write("<h2>Taxi Booking Form</h2>");
+        resp.getWriter().write("<form method='post' action='/taxiapp/book'>");
+        resp.getWriter().write("Pickup: <input type='text' name='pickup'><br>");
+        resp.getWriter().write("Destination: <input type='text' name='destination'><br>");
+        resp.getWriter().write("<input type='submit' value='Book Taxi'>");
+        resp.getWriter().write("</form>");
+        resp.getWriter().write("</body></html>");
+    }
 
-    # Wait for the pickup input to be available
-    print("Waiting for pickup input...")
-    pickup_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "pickup"))
-    )
-    print("Found pickup input")
-    pickup_input.send_keys("Downtown")
+    private void handleBooking(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String pickup = req.getParameter("pickup");
+        String destination = req.getParameter("destination");
 
-    # Wait for the destination input to be available
-    print("Waiting for destination input...")
-    destination_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "destination"))
-    )
-    print("Found destination input")
-    destination_input.send_keys("Airport")
-
-    # Wait for the submit button and click it
-    print("Waiting for submit button...")
-    submit_button = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "//input[@type='submit' and @value='Book Taxi']"))
-    )
-    print("Found submit button, clicking...")
-    submit_button.click()
-
-    # Optional: wait for response
-    time.sleep(2)
-
-    # Verify submission (checking plain text response)
-    print("Checking for confirmation message...")
-    body_text = driver.page_source
-    assert "Booking confirmed from Downtown to Airport" in body_text
-
-    print("Test passed: Ride successfully booked")
-
-except Exception as e:
-    print(f"Test failed: {e}")
-
-finally:
-    print("Quitting WebDriver...")
-    driver.quit()
+        if (pickup == null || pickup.isEmpty() || destination == null || destination.isEmpty()) {
+            resp.setContentType("text/plain");
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("Invalid booking details. Please provide both pickup and destination.");
+        } else {
+            resp.setContentType("text/plain");
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("Booking confirmed from " + pickup + " to " + destination);
+        }
+    }
+}
