@@ -33,6 +33,12 @@ pipeline {
             }
         }
 
+        stage('Setup Python Environment') {
+            steps {
+                sh 'pip3 install selenium'
+            }
+        }
+
         stage('Run Tests') {
             steps {
                 sh 'python3 $TEST_SCRIPT'
