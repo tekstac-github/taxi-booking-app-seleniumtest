@@ -27,7 +27,7 @@ try:
     # Wait for the pickup input to be available
     print("Waiting for pickup input...")
     pickup_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "pickup"))
+        EC.presence_of_element_located((By.NAME, "Pickup"))
     )
     print("Found pickup input")
     pickup_input.send_keys("Downtown")
@@ -35,7 +35,7 @@ try:
     # Wait for the destination input to be available
     print("Waiting for destination input...")
     destination_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "destination"))
+        EC.presence_of_element_located((By.NAME, "Destination"))
     )
     print("Found destination input")
     destination_input.send_keys("Airport")
