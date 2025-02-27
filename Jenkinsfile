@@ -6,6 +6,7 @@ pipeline {
         WAR_FILE = 'taxiapp*.war'
         JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
         PATH = "${JAVA_HOME}/bin:${PATH}"
+        TEST_SCRIPT = 'selenium_test_booking.py'
     }
 
     stages {
@@ -34,7 +35,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'mvn test'
+                sh 'python3 $TEST_SCRIPT'
             }
         }
     }
