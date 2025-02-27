@@ -27,7 +27,7 @@ try:
     # Wait for the pickup input to be available
     print("Waiting for pickup input...")
     pickup_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "Pickup"))
+        EC.presence_of_element_located((By.NAME, "pickup"))
     )
     print("Found pickup input")
     pickup_input.send_keys("Downtown")
@@ -35,7 +35,7 @@ try:
     # Wait for the destination input to be available
     print("Waiting for destination input...")
     destination_input = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.NAME, "Destination"))
+        EC.presence_of_element_located((By.NAME, "destination"))
     )
     print("Found destination input")
     destination_input.send_keys("Airport")
@@ -43,7 +43,7 @@ try:
     # Wait for the submit button and click it
     print("Waiting for submit button...")
     submit_button = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "//button[text()='Book Ride']"))
+        EC.element_to_be_clickable((By.XPATH, "//input[@type='submit' and @value='Book Taxi']"))
     )
     print("Found submit button, clicking...")
     submit_button.click()
@@ -51,12 +51,10 @@ try:
     # Optional: wait for response
     time.sleep(2)
 
-    # Verify submission (adjust selector based on app behavior)
+    # Verify submission (checking plain text response)
     print("Checking for confirmation message...")
-    confirmation_message = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "confirmation"))
-    )
-    assert "Booking confirmed" in confirmation_message.text
+    body_text = driver.page_source
+    assert "Booking confirmed from Downtown to Airport" in body_text
 
     print("Test passed: Ride successfully booked")
 
